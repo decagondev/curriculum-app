@@ -7,48 +7,9 @@ interface MainAreaProps {
 
 const MainArea: React.FC<MainAreaProps> = ({ curriculumUrl = 'https://example.com' }) => {
   const [loading, setLoading] = useState(true);
-  const [currentUrl, setCurrentUrl] = useState(curriculumUrl);
-  const [urlHistory, setUrlHistory] = useState<string[]>([curriculumUrl]);
-  const [historyIndex, setHistoryIndex] = useState(0);
 
   const handleIframeLoad = () => {
     setLoading(false);
-  };
-
-  const navigate = (url: string) => {
-    setLoading(true);
-    setCurrentUrl(url);
-    
-    // Add to history if it's a new URL
-    if (urlHistory[historyIndex] !== url) {
-      const newHistory = urlHistory.slice(0, historyIndex + 1);
-      newHistory.push(url);
-      setUrlHistory(newHistory);
-      setHistoryIndex(newHistory.length - 1);
-    }
-  };
-
-  const goBack = () => {
-    if (historyIndex > 0) {
-      setLoading(true);
-      const newIndex = historyIndex - 1;
-      setHistoryIndex(newIndex);
-      setCurrentUrl(urlHistory[newIndex]);
-    }
-  };
-
-  const goForward = () => {
-    if (historyIndex < urlHistory.length - 1) {
-      setLoading(true);
-      const newIndex = historyIndex + 1;
-      setHistoryIndex(newIndex);
-      setCurrentUrl(urlHistory[newIndex]);
-    }
-  };
-
-  const refresh = () => {
-    setLoading(true);
-    setCurrentUrl(currentUrl);
   };
 
   return (
@@ -64,7 +25,7 @@ const MainArea: React.FC<MainAreaProps> = ({ curriculumUrl = 'https://example.co
           
           <div className="h-full">
             <iframe 
-              src={currentUrl} 
+              src={curriculumUrl} 
               className="w-full h-full min-h-[600px] border-0"
               title="Curriculum Content"
               onLoad={handleIframeLoad}
